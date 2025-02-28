@@ -1,7 +1,7 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Image } from "react-native";
-
+import Animated from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 interface Product {
@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     <Pressable
       onPress={() =>
         route.push({
-          pathname: "/(auth)/(home)/singleproduct",
+          pathname: "/(auth)/(home)/singpleproduct",
           params: { item: JSON.stringify(item) },
         })
       }
@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
       className="bg-white p-2 rounded-lg mb-5"
     >
       <View className="flex bg-gray-100 items-center justify-center rounded-lg h-36  relative">
-        <Image source={item.image} className="w-28 h-28" />
+        <Animated.Image source={item.image} className="w-28 h-28" />
         <Text className="text-white bg-green-700 px-4 py-1 text-sm absolute top-0 left-0 rounded-tl-lg rounded-br-lg">
           {item.discount}
         </Text>

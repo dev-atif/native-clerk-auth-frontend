@@ -1,4 +1,4 @@
-import { Tabs, useFocusEffect, usePathname } from "expo-router";
+import { Tabs, useFocusEffect, usePathname, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { FontAwesome } from "@expo/vector-icons";
 import Animated, {
@@ -40,6 +40,8 @@ export default function PublicLayout() {
       keyboardDidHideListener.remove();
     };
   }, []);
+  const segments = useSegments();
+  console.log("Segment", segments);
   useFocusEffect(
     useCallback(() => {
       if (!isMounted) {
@@ -47,7 +49,10 @@ export default function PublicLayout() {
         return; // Prevent setting the tab bar style on initial load
       }
 
-      if (pathname.includes("/singleproduct")) {
+      if (
+        pathname.includes("/singpleproduct") ||
+        (segments[1] && segments[1] === "(cart)")
+      ) {
         setDisplayStyle(true); // Hide tab bar for specific routes
         setHeadershown(false);
         console.log("pathname", pathname);
@@ -57,6 +62,7 @@ export default function PublicLayout() {
       }
     }, [pathname]) // Re-run on pathname change
   );
+
   return (
     <>
       <View
@@ -105,7 +111,7 @@ export default function PublicLayout() {
             }}
           />
           <Tabs.Screen
-            name="cart"
+            name="(cart)"
             options={{
               headerShown: false,
               title: "Cart",

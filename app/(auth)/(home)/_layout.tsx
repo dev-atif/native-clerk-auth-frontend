@@ -4,14 +4,14 @@ export default function Homelayout() {
   return (
     <Stack initialRouteName="index">
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      {/* <Stack.Screen
-        name="singleproduct"
+      <Stack.Screen
+        name="singpleproduct"
         options={{
           headerShown: false,
 
-          presentation: "transparentModal",
+          presentation: "modal",
         }}
-      /> */}
+      />
     </Stack>
   );
 }

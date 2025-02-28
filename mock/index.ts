@@ -44,6 +44,9 @@ export const ProductData = [
     image: orange,
     discount: "35% OFF",
     weight: "1Kg",
+    rating: Math.random() * 5,
+    description:
+      "Crisp, juicy apples packed with natural sweetness and essential nutrients.Rich in potassium and fiber, these ripe bananas are perfect for snacking or smoothies.",
   },
   {
     id: 2,
@@ -51,6 +54,9 @@ export const ProductData = [
     image: Apple,
     discount: "20% OFF",
     weight: "1.5Kg",
+    rating: Math.random() * 5,
+    description:
+      "Rich in potassium and fiber, these ripe bananas are perfect for snacking or smoothies.Bursting with citrus flavor, our oranges are loaded with vitamin C for a refreshing taste.",
   },
   {
     id: 3,
@@ -58,6 +64,9 @@ export const ProductData = [
     image: orange,
     discount: "25% OFF",
     weight: "2Kg",
+    rating: Math.random() * 5,
+    description:
+      "Bursting with citrus flavor, our oranges are loaded with vitamin C for a refreshing taste.Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.",
   },
   {
     id: 4,
@@ -65,6 +74,9 @@ export const ProductData = [
     image: Apple,
     discount: "30% OFF",
     weight: "500g",
+    rating: Math.random() * 5,
+    description:
+      "Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.",
   },
   {
     id: 5,
@@ -72,5 +84,8 @@ export const ProductData = [
     image: orange,
     discount: "15% OFF",
     weight: "1Kg",
+    rating: Math.random() * 5,
+    description:
+      "Enjoy the tropical sweetness of our juicy mangoes, full of vitamins and flavor.Enjoy the tropical sweetness of our juicy mangoes, full of vitamins and flavor.",
   },
 ];

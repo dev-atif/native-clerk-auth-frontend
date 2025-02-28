@@ -21,11 +21,13 @@ import Carosel from "@/components/Carosel";
 import Categories from "@/components/Categories";
 import ProductCard from "@/components/products-card/ProductCard";
 
+
 const Home = () => {
   const router = useRouter();
   const [selectlocation, setSelectLocation] = useState(locations[0].value);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      
       <ScrollView>
         <View className="px-8 mt-8">
           <View className="flex items-center justify-between flex-row ">
