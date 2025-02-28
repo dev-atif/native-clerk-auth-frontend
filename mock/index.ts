@@ -45,8 +45,10 @@ export const ProductData = [
     discount: "35% OFF",
     weight: "1Kg",
     rating: Math.random() * 5,
+    originalPrice: 200, // Example price
+    salePrice: 200 - 200 * 0.35, // Applying 35% discount
     description:
-      "Crisp, juicy apples packed with natural sweetness and essential nutrients.Rich in potassium and fiber, these ripe bananas are perfect for snacking or smoothies.",
+      "Crisp, juicy apples packed with natural sweetness and essential nutrients.",
   },
   {
     id: 2,
@@ -55,8 +57,10 @@ export const ProductData = [
     discount: "20% OFF",
     weight: "1.5Kg",
     rating: Math.random() * 5,
+    originalPrice: 150, // Example price
+    salePrice: 150 - 150 * 0.2, // Applying 20% discount
     description:
-      "Rich in potassium and fiber, these ripe bananas are perfect for snacking or smoothies.Bursting with citrus flavor, our oranges are loaded with vitamin C for a refreshing taste.",
+      "Rich in potassium and fiber, these ripe bananas are perfect for snacking or smoothies.",
   },
   {
     id: 3,
@@ -65,8 +69,10 @@ export const ProductData = [
     discount: "25% OFF",
     weight: "2Kg",
     rating: Math.random() * 5,
+    originalPrice: 250, // Example price
+    salePrice: 250 - 250 * 0.25, // Applying 25% discount
     description:
-      "Bursting with citrus flavor, our oranges are loaded with vitamin C for a refreshing taste.Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.",
+      "Bursting with citrus flavor, our oranges are loaded with vitamin C for a refreshing taste.",
   },
   {
     id: 4,
@@ -75,8 +81,10 @@ export const ProductData = [
     discount: "30% OFF",
     weight: "500g",
     rating: Math.random() * 5,
+    originalPrice: 180, // Example price
+    salePrice: 180 - 180 * 0.3, // Applying 30% discount
     description:
-      "Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.",
+      "Sweet and tangy green grapes, perfect for snacking or adding to fruit salads.",
   },
   {
     id: 5,
@@ -85,7 +93,9 @@ export const ProductData = [
     discount: "15% OFF",
     weight: "1Kg",
     rating: Math.random() * 5,
+    originalPrice: 300, // Example price
+    salePrice: 300 - 300 * 0.15, // Applying 15% discount
     description:
-      "Enjoy the tropical sweetness of our juicy mangoes, full of vitamins and flavor.Enjoy the tropical sweetness of our juicy mangoes, full of vitamins and flavor.",
+      "Enjoy the tropical sweetness of our juicy mangoes, full of vitamins and flavor.",
   },
 ];

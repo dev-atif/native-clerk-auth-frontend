@@ -49,10 +49,7 @@ export default function PublicLayout() {
         return; // Prevent setting the tab bar style on initial load
       }
 
-      if (
-        pathname.includes("/singpleproduct") ||
-        (segments[1] && segments[1] === "(cart)")
-      ) {
+      if (pathname.includes("/singpleproduct") || segments[1] === "(cart)") {
         setDisplayStyle(true); // Hide tab bar for specific routes
         setHeadershown(false);
         console.log("pathname", pathname);
@@ -60,7 +57,7 @@ export default function PublicLayout() {
         setDisplayStyle(false); // Show tab bar for others
         setHeadershown(true);
       }
-    }, [pathname]) // Re-run on pathname change
+    }, [pathname, segments]) // Re-run on pathname change
   );
 
   return (
