@@ -19,7 +19,7 @@ interface LongCardProps {
 const renderRightActions = () => {
   return (
     <View className="bg-red-300 mt-4 p-5 rounded-lg flex items-center justify-center">
-      <MaterialCommunityIcons name="delete-sweep" size={30} color="red" />
+      <MaterialCommunityIcons name="delete-sweep" size={30} color="white" />
     </View>
   );
 };
