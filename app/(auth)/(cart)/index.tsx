@@ -16,6 +16,7 @@ import LongCard from "@/components/products-card/LongCard";
 import CustomBottomSheet from "@/components/bottom-sheet/CustomBottomSheet";
 import { useRouter } from "expo-router";
 import { useProductStore } from "@/store/ProductStore";
+import { useCartPrice } from "@/Hooks/useCartPrice";
 
 const Cart = () => {
   const [IsBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -23,7 +24,7 @@ const Cart = () => {
   const { height } = Dimensions.get("window");
   const router = useRouter();
   const { Cart } = useProductStore();
-  console.log("🚀 ~ file: index.tsx ~ line 64 ~ Cart", Cart);
+  const { totalPrice, deliveryCharge, finalTotal } = useCartPrice();
   // Renders
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
@@ -46,7 +47,7 @@ const Cart = () => {
           data={Cart}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <LongCard item={item} />}
+          renderItem={({ item }) => <LongCard QuantityButtons item={item} />}
           contentContainerStyle={{ paddingBottom: 20 }}
         />
 
@@ -57,7 +58,7 @@ const Cart = () => {
         >
           <View>
             <Text className="text-gray-400">Total Price</Text>
-            <Text className="text-xl font-semibold">$12.00</Text>
+            <Text className="text-xl font-semibold">{totalPrice} $</Text>
           </View>
           <Pressable
             onPress={() => setIsBottomSheetVisible(true)}
@@ -90,25 +91,29 @@ const Cart = () => {
                         Sub Total
                       </Text>
                       <Text className=" text-xl font-medium  mt-2">
-                        $120.00
+                        ${totalPrice}
                       </Text>
                     </View>
                     <View className="flex flex-row justify-between my-2">
                       <Text className=" text-xl text-gray-400 ">
                         Delivery Fee
                       </Text>
-                      <Text className=" text-xl font-medium  ">$120.00</Text>
+                      <Text className=" text-xl font-medium  ">
+                        ${deliveryCharge}
+                      </Text>
                     </View>
                     <View className="flex flex-row justify-between ">
                       <Text className=" text-xl text-gray-400 ">Discount</Text>
-                      <Text className=" text-xl font-medium  ">$120.00</Text>
+                      <Text className=" text-xl font-medium  ">$10.00</Text>
                     </View>
                     <View className="bg-gray-300 w-full h-[0.5px] my-6" />
                     <View className="flex flex-row justify-between ">
                       <Text className=" text-xl text-gray-400 ">
                         Total Cost
                       </Text>
-                      <Text className=" text-xl font-medium  ">$120.00</Text>
+                      <Text className=" text-xl font-medium  ">
+                        ${Math.floor(finalTotal)}
+                      </Text>
                     </View>
                     {/* __________Button________________ */}
                     <Pressable

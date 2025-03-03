@@ -6,7 +6,7 @@ import {
   ToastAndroid,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 
 import EvilIcons from "@expo/vector-icons/EvilIcons";
@@ -25,10 +25,20 @@ const singleproduct = () => {
   const { addCart } = useProductStore();
   if (!product) return <Text>Loading...</Text>;
   const ProductAdd = () => {
-    addCart(product);
+    addCart({ ...product, quantity: productQuantity });
     route.navigate("/(auth)/(cart)");
     ToastAndroid.show("Product added to cart", ToastAndroid.SHORT);
   };
+  const [productQuantity, setProductQuantity] = useState(1);
+  const increment = () => {
+    setProductQuantity(productQuantity + 1);
+  };
+  const decrement = () => {
+    if (productQuantity > 1) {
+      setProductQuantity(productQuantity - 1);
+    }
+  };
+  console.log(product);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ flex: 1 }}>
@@ -52,11 +62,17 @@ const singleproduct = () => {
         <View className="mt-4 px-4 flex items-center justify-between flex-row">
           <Text className="text-lg font-bold text-gray-400">Fruit</Text>
           <View className="flex items-center gap-2 flex-row">
-            <Pressable className="bg-gray-300 p-1 rounded-lg mt-2 flex items-center justify-between flex-row">
+            <Pressable
+              onPress={() => decrement()}
+              className="bg-gray-300 p-1 rounded-lg mt-2 flex items-center justify-between flex-row"
+            >
               <AntDesign name="minus" size={24} color="black" />
             </Pressable>
-            <Text className=" w-12 text-center">{1} kg</Text>
-            <Pressable className="bg-green-700 p-1 rounded-lg mt-2 flex items-center justify-between flex-row">
+            <Text className=" w-12 text-center">{productQuantity} kg</Text>
+            <Pressable
+              onPress={() => increment()}
+              className="bg-green-700 p-1 rounded-lg mt-2 flex items-center justify-between flex-row"
+            >
               <AntDesign name="plus" size={24} color="white" />
             </Pressable>
           </View>
@@ -85,7 +101,12 @@ const singleproduct = () => {
         >
           <View>
             <Text className="text-gray-400">Total Price</Text>
-            <Text className="text-xl font-semibold">$12.00</Text>
+            <Text className="text-xl font-semibold">
+              {Number(
+                product?.salePrice ? product?.salePrice : product?.originalPrice
+              ) * Number(productQuantity)}
+              $
+            </Text>
           </View>
           <Pressable
             onPress={ProductAdd}

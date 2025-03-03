@@ -3,6 +3,7 @@ import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useProductStore } from "@/store/ProductStore";
 interface LongCardProps {
   item: {
     id: number;
@@ -14,16 +15,25 @@ interface LongCardProps {
     description: string;
     originalPrice: number;
     salePrice: number;
+    quantity: number;
   };
+  QuantityButtons?: boolean;
 }
-const renderRightActions = () => {
-  return (
-    <View className="bg-red-300 mt-4 p-5 rounded-lg flex items-center justify-center">
-      <MaterialCommunityIcons name="delete-sweep" size={30} color="white" />
-    </View>
-  );
-};
-const LongCard: React.FC<LongCardProps> = ({ item }) => {
+
+const LongCard: React.FC<LongCardProps> = ({ item, QuantityButtons }) => {
+  const { deleteProduct, addCart, decrementCart } = useProductStore();
+
+  const renderRightActions = () => {
+    return (
+      <Pressable
+        onPress={() => deleteProduct(item.id)}
+        className="bg-red-300 mt-4 p-5 rounded-lg flex items-center justify-center"
+      >
+        <MaterialCommunityIcons name="delete-sweep" size={30} color="white" />
+      </Pressable>
+    );
+  };
+
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <View className=" mt-4 p-3 rounded-lg shadow-lg bg-white">
@@ -44,15 +54,25 @@ const LongCard: React.FC<LongCardProps> = ({ item }) => {
             </View>
           </View>
           <View>
-            <View>
-              <Pressable className="bg-gray-300 p-1 rounded-lg mt-2 flex items-center justify-between flex-row">
-                <AntDesign name="minus" size={24} color="black" />
-              </Pressable>
-              <Text className="  text-center">{1} kg</Text>
-              <Pressable className="bg-green-700 p-1 rounded-lg mt-2 flex items-center justify-between flex-row">
-                <AntDesign name="plus" size={24} color="white" />
-              </Pressable>
-            </View>
+            {QuantityButtons ? (
+              <>
+                <View>
+                  <Pressable
+                    onPress={() => decrementCart(item.id)}
+                    className="bg-gray-300 p-1 rounded-lg mt-2 flex items-center justify-between flex-row"
+                  >
+                    <AntDesign name="minus" size={24} color="black" />
+                  </Pressable>
+                  <Text className="  text-center">{item?.quantity} kg</Text>
+                  <Pressable
+                    onPress={() => addCart(item)}
+                    className="bg-green-700 p-1 rounded-lg mt-2 flex items-center justify-between flex-row"
+                  >
+                    <AntDesign name="plus" size={24} color="white" />
+                  </Pressable>
+                </View>
+              </>
+            ) : null}
           </View>
         </View>
       </View>

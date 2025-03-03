@@ -11,11 +11,13 @@ import { ProductData } from "@/mock";
 import LongCard from "@/components/products-card/LongCard";
 import { useRouter } from "expo-router";
 import { CheckBox } from "react-native-elements";
+import { useProductStore } from "@/store/ProductStore";
 
 const checkout = () => {
   const [IsBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const { height } = Dimensions.get("window");
   const [selectedIndex, setIndex] = useState(0);
+  const { Cart } = useProductStore();
   const router = useRouter();
   console.log(selectedIndex);
   return (
@@ -55,10 +57,10 @@ const checkout = () => {
         {/* Product List */}
         <FlatList
           style={{ paddingHorizontal: 10, height: height - 296 }}
-          data={ProductData}
+          data={Cart}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <LongCard item={item} />}
+          renderItem={({ item }) => <LongCard QuantityButtons item={item} />}
           contentContainerStyle={{ paddingBottom: 20 }}
         />
 
