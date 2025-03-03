@@ -12,10 +12,8 @@ export const useCartPrice = () => {
     }, 0);
   }, [Cart]);
 
-  // Generate random delivery charge between $5 - $15
   const deliveryCharge = useMemo(() => Math.floor(Math.random() * 11) + 5, []);
 
-  // Generate random tax (5% - 10% of total price)
   const taxRate = useMemo(() => Math.random() * (10 - 5) + 5, []);
   const taxAmount = useMemo(
     () => (totalPrice * taxRate) / 100,
