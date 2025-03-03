@@ -99,3 +99,15 @@ export const ProductData = [
       "Enjoy the tropical sweetness of our juicy mangoes, full of vitamins and flavor.",
   },
 ];
+
+export type Product = {
+  id: number;
+  name: string;
+  image: string; // Assuming `orange` is an image URL or imported asset
+  discount: string;
+  weight: string;
+  rating: number;
+  originalPrice: number;
+  salePrice: number;
+  description: string;
+};

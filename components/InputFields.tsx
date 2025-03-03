@@ -24,7 +24,7 @@ const InputFields: React.FC<InputFieldsProps> = ({
       {label && <Text className="pl-2">{label}</Text>}
 
       <View className=" rounded-lg px-2 mt-1 border border-gray-300">
-        <TextInput {...props} className="bg-transparent" />
+        <TextInput {...props} className="bg-transparent"/>
       </View>
     </View>
   );

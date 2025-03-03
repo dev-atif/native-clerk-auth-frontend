@@ -1,4 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
 import React from "react";
 import { BlurView } from "expo-blur";
 
@@ -10,12 +17,18 @@ import { Image } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { StarRatingDisplay } from "react-native-star-rating-widget";
 import Feather from "@expo/vector-icons/Feather";
+import { useProductStore } from "@/store/ProductStore";
 const singleproduct = () => {
   const route = useRouter();
   const { item } = useLocalSearchParams();
   const product = item ? JSON.parse(item as string) : null;
-
+  const { addCart } = useProductStore();
   if (!product) return <Text>Loading...</Text>;
+  const ProductAdd = () => {
+    addCart(product);
+    route.navigate("/(auth)/(cart)");
+    ToastAndroid.show("Product added to cart", ToastAndroid.SHORT);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ flex: 1 }}>
@@ -75,7 +88,7 @@ const singleproduct = () => {
             <Text className="text-xl font-semibold">$12.00</Text>
           </View>
           <Pressable
-            onPress={() => route.navigate("/(auth)/(cart)")}
+            onPress={ProductAdd}
             className="flex items-center justify-center gap-3 bg-green-700 flex-row py-3 w-1/2 rounded-lg"
           >
             <Feather name="shopping-cart" size={24} color="white" />

@@ -15,12 +15,15 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import LongCard from "@/components/products-card/LongCard";
 import CustomBottomSheet from "@/components/bottom-sheet/CustomBottomSheet";
 import { useRouter } from "expo-router";
+import { useProductStore } from "@/store/ProductStore";
 
 const Cart = () => {
   const [IsBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const { height } = Dimensions.get("window");
   const router = useRouter();
+  const { Cart } = useProductStore();
+  console.log("🚀 ~ file: index.tsx ~ line 64 ~ Cart", Cart);
   // Renders
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
@@ -40,7 +43,7 @@ const Cart = () => {
         {/* Product List */}
         <FlatList
           style={{ paddingHorizontal: 10, height: height - 120 }}
-          data={ProductData}
+          data={Cart}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <LongCard item={item} />}
@@ -108,7 +111,10 @@ const Cart = () => {
                       <Text className=" text-xl font-medium  ">$120.00</Text>
                     </View>
                     {/* __________Button________________ */}
-                    <Pressable className="bg-green-700 py-3 w-full rounded-lg mt-6">
+                    <Pressable
+                      onPress={() => router.navigate("/checkout")}
+                      className="bg-green-700 py-3 w-full rounded-lg mt-6"
+                    >
                       <Text className="text-white text-center font-medium">
                         Proceed to Checkout
                       </Text>
