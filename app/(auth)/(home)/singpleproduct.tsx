@@ -55,7 +55,7 @@ const singleproduct = () => {
           </View>
           <View>
             <View className="flex items-center justify-center">
-              <Image source={product.image} className="w-80 h-80" />
+              <Image source={{ uri: product.image }} className="w-80 h-80" />
             </View>
           </View>
         </View>

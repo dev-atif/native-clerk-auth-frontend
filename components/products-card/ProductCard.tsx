@@ -6,7 +6,7 @@ import {
   ToastAndroid,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import Animated from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
 import { CreateWishlist } from "@/Helper/CreateWishList";
 import eventBus from "@/Helper/event";
+import { GetFavProducts } from "@/Helper/GetFavProducts";
 interface Product {
   id: number;
   name: string;
@@ -31,8 +32,10 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const { width: screenWidth } = Dimensions.get("window");
+  const [favdata, setFavdata] = useState([]);
   const route = useRouter();
   const { user } = useUser();
+  const userId = user?.id || "";
   //@ts-ignore
   const id = item.productId ? item.productId : item.id;
   const AddtoWishlist = async (item: Product) => {
@@ -48,13 +51,37 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
       console.log("error", error);
     }
   };
+  const fetchWishlist = async () => {
+    try {
+      const data = await GetFavProducts(userId);
+      if (data?.data) {
+        setFavdata(data.data);
+      } else {
+        setFavdata([]);
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      setFavdata([]);
+    }
+  };
+  useEffect(() => {
+    if (userId) {
+      fetchWishlist();
+    }
+  }, [AddtoWishlist]);
+  //@ts-ignore
+  const FavIconColor = favdata.some((Citem) => Citem.productId == id);
+
   return (
     <Pressable
       style={{ elevation: 5, width: screenWidth / 2 - 32 }}
       className="bg-white p-2 rounded-lg mb-5"
     >
       <View className="flex bg-gray-100 items-center justify-center rounded-lg h-36  relative">
-        <Image source={{ uri: item.image }} className="w-28 h-28" />
+        <Image
+          source={{ uri: item.image }}
+          className="w-28 h-28 mix-blend-darken"
+        />
         <Text className="text-white bg-green-700 px-4 py-1 text-sm absolute top-0 left-0 rounded-tl-lg rounded-br-lg">
           {item.discount}
         </Text>
@@ -62,7 +89,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
           onPress={() => AddtoWishlist(item)}
           className="absolute top-1 right-1"
         >
-          <AntDesign name="heart" size={20} color="green" />
+          <AntDesign
+            name="heart"
+            size={20}
+            color={FavIconColor ? "green" : "gray"}
+          />
         </Pressable>
       </View>
       <View>

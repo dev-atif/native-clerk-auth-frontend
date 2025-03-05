@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
 } from "react-native";
 import React from "react";
@@ -20,10 +21,18 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CustomBottomSheet from "@/components/bottom-sheet/CustomBottomSheet";
 import InputFields from "@/components/InputFields";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-expo";
+import { useProductStore } from "@/store/ProductStore";
+import { useCartPrice } from "@/Hooks/useCartPrice";
+import { useAddressStore } from "@/store/UserAddress";
+import { ActivityIndicator } from "react-native";
 const payment = () => {
   const [paymentmethod, setPaymentmethod] = useState("");
   const [IsBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+ 
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -144,10 +153,21 @@ const payment = () => {
             style={{ elevation: 7 }}
           >
             <Pressable
-              onPress={() => router.navigate("/Summary")}
+              // onPress={CreateOrder}
+              onPress={() => router.replace("/(auth)/(cart)/Summary")}
               className="flex items-center justify-center gap-3 bg-green-700 flex-row py-3 w-full rounded-lg"
             >
-              <Text className="text-white font-semibold">Confirm payment</Text>
+              {loading ? (
+                <>
+                  <ActivityIndicator color={"white"} size={20} />
+                </>
+              ) : (
+                <>
+                  <Text className="text-white font-semibold">
+                    Confirm payment
+                  </Text>
+                </>
+              )}
             </Pressable>
           </View>
 

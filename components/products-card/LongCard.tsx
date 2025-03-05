@@ -39,7 +39,7 @@ const LongCard: React.FC<LongCardProps> = ({ item, QuantityButtons }) => {
       <View className=" mt-4 p-3 rounded-lg shadow-lg bg-white">
         <View className="flex flex-row gap-2 items-center">
           <View className="bg-gray-200 rounded-lg ">
-            <Image source={item.image} className="w-32 h-32" />
+            <Image source={{ uri: item.image }} className="w-32 h-32" />
           </View>
           <View className="flex-1">
             <Text className="text-lg font-semibold">{item.name}</Text>

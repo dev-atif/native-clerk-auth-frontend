@@ -34,16 +34,14 @@ const Favourite = () => {
       fetchWishlist();
     }
 
-    // Listen for the wishlist update event
     const listener = () => {
-      console.log("Wishlist updated! Fetching new data...");
       fetchWishlist();
     };
 
     eventBus.on("wishlistUpdated", listener);
 
     return () => {
-      eventBus.off("wishlistUpdated", listener); // Cleanup
+      eventBus.off("wishlistUpdated", listener);
     };
   }, []);
 

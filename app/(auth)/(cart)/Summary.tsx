@@ -4,20 +4,72 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import { ProductData } from "@/mock";
 import LongCard from "@/components/products-card/LongCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useProductStore } from "@/store/ProductStore";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-expo";
+import { useCartPrice } from "@/Hooks/useCartPrice";
+import { useAddressStore } from "@/store/UserAddress";
 const Summary = () => {
   const router = useRouter();
-  const [success, setSuccess] = useState(true);
 
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+  const { Cart } = useProductStore();
+  const { finalTotal } = useCartPrice();
+  const { addresses, currentAddressIndex } = useAddressStore();
+
+  const CreateOrder = async () => {
+    try {
+      setLoading(true);
+      const orderData = {
+        userId: user?.id,
+        name: user?.username,
+        number: user?.unsafeMetadata?.number,
+        email: user?.emailAddresses[0]?.emailAddress,
+        totalamount: finalTotal,
+        address:
+          currentAddressIndex !== null && currentAddressIndex !== undefined
+            ? addresses[currentAddressIndex].address
+            : null,
+        product: Cart,
+      };
+      const response = await axios.post(
+        "http://192.168.18.107:3333/api/order/create",
+        orderData
+      );
+      if (response) {
+        setSuccess(true);
+        ToastAndroid.show(
+          "Order Has been Placed Successfully!",
+          ToastAndroid.LONG
+        );
+      }
+    } catch (error: any) {
+      console.error(
+        "CreateOrder Error:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      setSuccess(false);
+    }, [])
+  );
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -32,7 +84,7 @@ const Summary = () => {
                   {/* Back Button - Fixed Height */}
                   <View className="mt-8">
                     <Feather
-                      onPress={() => router.push("/(auth)/(home)")}
+                      onPress={() => router.replace("/(auth)/(cart)")}
                       name="arrow-left-circle"
                       size={30}
                       color="black"
@@ -65,7 +117,7 @@ const Summary = () => {
                 <View>
                   <View className="flex flex-row items-center gap-24  mt-8">
                     <Feather
-                      onPress={() => router.back()}
+                      onPress={() => router.replace("/(auth)/(home)")}
                       name="arrow-left-circle"
                       size={30}
                       color="black"
@@ -75,7 +127,8 @@ const Summary = () => {
                     </Text>
                   </View>
                   <View>
-                    {ProductData.slice(0, 2).map((item) => (
+                    {Cart.map((item) => (
+                      //@ts-ignore
                       <LongCard item={item} key={item.id} />
                     ))}
                   </View>
@@ -86,7 +139,17 @@ const Summary = () => {
                         Order Date
                       </Text>
                       <Text className="text-gray-400 text-base ">
-                        12th May 2021 | 12:00 PM
+                        {new Date().toLocaleString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "2-digit",
+                        })}{" "}
+                        |{" "}
+                        {new Date().toLocaleString("en-GB", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
                       </Text>
                     </View>
                     <View className=" flex items-center justify-between flex-row mt-4">
@@ -141,7 +204,10 @@ const Summary = () => {
                 className="h-32 w-full bg-white rounded-t-xl px-4 py-3 flex items-center flex-col justify-between "
                 style={{ elevation: 7 }}
               >
-                <Pressable className="flex items-center justify-center gap-3 bg-green-700 flex-row py-3 w-full rounded-lg">
+                <Pressable
+                  onPress={() => router.replace("/(auth)/order")}
+                  className="flex items-center justify-center gap-3 bg-green-700 flex-row py-3 w-full rounded-lg"
+                >
                   <Text className="text-white font-semibold">View Order</Text>
                 </Pressable>
                 <Pressable>
@@ -158,7 +224,7 @@ const Summary = () => {
                 style={{ elevation: 7 }}
               >
                 <Pressable
-                  onPress={() => router.navigate("/Summary")}
+                  onPress={CreateOrder}
                   className="flex items-center justify-center gap-3 bg-green-700 flex-row py-3 w-full rounded-lg"
                 >
                   <Text className="text-white font-semibold">Continue</Text>

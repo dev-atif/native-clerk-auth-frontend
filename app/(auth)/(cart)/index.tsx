@@ -14,7 +14,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import LongCard from "@/components/products-card/LongCard";
 import CustomBottomSheet from "@/components/bottom-sheet/CustomBottomSheet";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useProductStore } from "@/store/ProductStore";
 import { useCartPrice } from "@/Hooks/useCartPrice";
 
@@ -25,13 +25,18 @@ const Cart = () => {
   const router = useRouter();
   const { Cart } = useProductStore();
   const { totalPrice, deliveryCharge, finalTotal } = useCartPrice();
-  // Renders
+  useFocusEffect(
+    useCallback(() => {
+      setIsBottomSheetVisible(false);
+      console.log("running");
+    }, [])
+  );
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
       <View className="mt-14 " style={{ position: "relative" }}>
         <View className="flex flex-row items-center gap-24 px-4">
           <Feather
-            onPress={() => router.back()}
+            onPress={() => router.replace("/(auth)/(home)")}
             name="arrow-left-circle"
             size={30}
             color="black"
@@ -136,5 +141,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-const styles = StyleSheet.create({});
