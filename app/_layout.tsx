@@ -79,6 +79,10 @@ function AuthenticatedLayout() {
         <Stack.Screen name="verifyottp" options={{ headerShown: false }} />
         <Stack.Screen name="forgetpassword" options={{ headerShown: false }} />
         <Stack.Screen name="Profile" options={{ headerShown: false }} />
+        <Stack.Screen name="cart" options={{ headerShown: false }} />
+        <Stack.Screen name="payment" options={{ headerShown: false }} />
+        <Stack.Screen name="summary" options={{ headerShown: false }} />
+        <Stack.Screen name="checkout" options={{ headerShown: false }} />
         <Stack.Screen
           name="verifyresetpasswordotp"
           options={{ headerShown: false }}

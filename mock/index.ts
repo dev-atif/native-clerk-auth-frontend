@@ -107,7 +107,7 @@ export const ProductData = [
 export type Product = {
   id: number;
   name: string;
-  image: string; // Assuming `orange` is an image URL or imported asset
+  image: string;
   discount: string;
   weight: string;
   rating: number;

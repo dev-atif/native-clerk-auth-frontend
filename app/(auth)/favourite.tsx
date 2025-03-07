@@ -1,55 +1,28 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { GetFavProducts } from "@/Helper/GetFavProducts";
+
 import { useUser } from "@clerk/clerk-expo";
 import ProductCard from "@/components/products-card/ProductCard";
 import eventBus from "@/Helper/event"; // Import event emitter
+import { useFavouriteProduct } from "@/store/FavProductStore";
 
 const Favourite = () => {
   const router = useRouter();
   const { user } = useUser();
   const userId = user?.id || "";
-  const [fav, setFav] = useState([]);
+  const { FavProduct } = useFavouriteProduct();
 
-  const fetchWishlist = async () => {
-    try {
-      const data = await GetFavProducts(userId);
-      if (data?.data) {
-        setFav(data.data);
-      } else {
-        setFav([]);
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-      setFav([]);
-    }
-  };
-
-  useEffect(() => {
-    if (userId) {
-      fetchWishlist();
-    }
-
-    const listener = () => {
-      fetchWishlist();
-    };
-
-    eventBus.on("wishlistUpdated", listener);
-
-    return () => {
-      eventBus.off("wishlistUpdated", listener);
-    };
-  }, []);
+  const CurrentUserFav = FavProduct.filter((item) => item.userId === userId);
 
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <View style={{ flex: 1, backgroundColor: "white" }}>
-          <View className="flex flex-row items-center gap-24 px-4">
+          <View className="flex flex-row items-center  justify-between px-4 mt-3">
             <Feather
               onPress={() => router.back()}
               name="arrow-left-circle"
@@ -59,26 +32,53 @@ const Favourite = () => {
             <Text className="tracking-wider font-medium text-xl text-center">
               Favourite Products
             </Text>
+            <Pressable
+              onPress={() => router.push("/cart")}
+              className="  p-2 rounded-full"
+            >
+              <Feather name="shopping-cart" size={24} color="green" />
+            </Pressable>
           </View>
           <View>
-            <View style={{ padding: 10 }}>
-              {fav.length > 0 ? (
-                <FlatList
-                  data={fav}
-                  keyExtractor={(item, index) => index.toString()}
-                  numColumns={2}
-                  columnWrapperStyle={{ justifyContent: "space-between" }}
-                  renderItem={({ item }) => (
-                    <View style={{ flex: 1, margin: 5 }}>
-                      <ProductCard item={item} />
-                    </View>
-                  )}
-                />
-              ) : (
-                <Text style={{ textAlign: "center", marginTop: 20 }}>
-                  No favorite items found.
-                </Text>
-              )}
+            <View className="px-2 pt-4">
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={CurrentUserFav}
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={2}
+                columnWrapperStyle={{
+                  justifyContent: "space-between",
+                  gap: 160,
+                }}
+                renderItem={({ item }) => (
+                  <View style={{ flex: 1, margin: 5, alignItems: "center" }}>
+                    <ProductCard item={item} />
+                  </View>
+                )}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      height: 300,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        textAlign: "center",
+                        paddingTop: 10,
+                      }}
+                    >
+                      No Favourite found
+                    </Text>
+                  </View>
+                }
+                contentContainerStyle={{
+                  paddingBottom: 50,
+                  alignItems: "center", // ✅ Ensures the list items are centered
+                }}
+              />
             </View>
           </View>
         </View>

@@ -84,7 +84,7 @@ const Summary = () => {
                   {/* Back Button - Fixed Height */}
                   <View className="mt-8">
                     <Feather
-                      onPress={() => router.replace("/(auth)/(cart)")}
+                      onPress={() => router.replace("/(auth)/(home)")}
                       name="arrow-left-circle"
                       size={30}
                       color="black"
@@ -117,7 +117,7 @@ const Summary = () => {
                 <View>
                   <View className="flex flex-row items-center gap-24  mt-8">
                     <Feather
-                      onPress={() => router.replace("/(auth)/(home)")}
+                      onPress={() => router.push("/(auth)/(home)")}
                       name="arrow-left-circle"
                       size={30}
                       color="black"

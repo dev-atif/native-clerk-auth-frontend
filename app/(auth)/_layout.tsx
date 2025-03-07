@@ -49,7 +49,7 @@ export default function PublicLayout() {
         return; // Prevent setting the tab bar style on initial load
       }
 
-      if (pathname.includes("/singpleproduct") || segments[1] === "(cart)") {
+      if (pathname.includes("/singpleproduct")) {
         setDisplayStyle(true); // Hide tab bar for specific routes
         setHeadershown(false);
         console.log("pathname", pathname);
@@ -108,12 +108,12 @@ export default function PublicLayout() {
             }}
           />
           <Tabs.Screen
-            name="(cart)"
+            name="(product)"
             options={{
               headerShown: false,
-              title: "Cart",
+              title: "Product",
               tabBarIcon: ({ focused }) => (
-                <TabItem name="shopping-cart" label="Cart" focused={focused} />
+                <TabItem name="cubes" label="Products" focused={focused} />
               ),
               tabBarButton: (props) => (
                 <TouchableOpacity

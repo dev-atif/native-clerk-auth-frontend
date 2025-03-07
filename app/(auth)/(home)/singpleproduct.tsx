@@ -26,7 +26,7 @@ const singleproduct = () => {
   if (!product) return <Text>Loading...</Text>;
   const ProductAdd = () => {
     addCart({ ...product, quantity: productQuantity });
-    route.navigate("/(auth)/(cart)");
+    route.navigate("/cart");
     ToastAndroid.show("Product added to cart", ToastAndroid.SHORT);
   };
   const [productQuantity, setProductQuantity] = useState(1);

@@ -15,19 +15,11 @@ import { useUser } from "@clerk/clerk-expo";
 import { CreateWishlist } from "@/Helper/CreateWishList";
 import eventBus from "@/Helper/event";
 import { GetFavProducts } from "@/Helper/GetFavProducts";
-interface Product {
-  id: number;
-  name: string;
-  image: any;
-  discount: string;
-  weight: string;
-  rating: number;
-  originalPrice: number;
-  salePrice: number;
-  description: string;
-}
+import { useFavouriteProduct } from "@/store/FavProductStore";
+import { Products } from "@/types";
+
 interface ProductCardProps {
-  item: Product;
+  item: Products;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
@@ -35,42 +27,28 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const [favdata, setFavdata] = useState([]);
   const route = useRouter();
   const { user } = useUser();
+  const { FavProduct, setFav } = useFavouriteProduct();
   const userId = user?.id || "";
   //@ts-ignore
-  const id = item.productId ? item.productId : item.id;
-  const AddtoWishlist = async (item: Product) => {
+  // const id = item.productId ? item.productId : item.id;
+
+  const AddtoWishlist = async (item: Products) => {
     try {
       if (user) {
-        const response = await CreateWishlist(item, user.id, id);
+        setFav({ ...item, userId });
+        const response = await CreateWishlist(userId, item.id);
         if (response) {
-          ToastAndroid.show(`${response.message}`, ToastAndroid.LONG);
-          eventBus.emit("wishlistUpdated");
+          console.log("added");
         }
       }
     } catch (error) {
       console.log("error", error);
     }
   };
-  const fetchWishlist = async () => {
-    try {
-      const data = await GetFavProducts(userId);
-      if (data?.data) {
-        setFavdata(data.data);
-      } else {
-        setFavdata([]);
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-      setFavdata([]);
-    }
-  };
-  useEffect(() => {
-    if (userId) {
-      fetchWishlist();
-    }
-  }, [AddtoWishlist]);
-  //@ts-ignore
-  const FavIconColor = favdata.some((Citem) => Citem.productId == id);
+
+  const FavIconColor = FavProduct.some(
+    (pitem) => pitem.id === item.id && pitem.userId === userId
+  );
 
   return (
     <Pressable
@@ -98,6 +76,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
       </View>
       <View>
         <Text className=" text-base my-1">{item.name}</Text>
+      </View>
+      <View className="flex items-center justify-between flex-row pb-2">
+        <Text className="text-sm">Category</Text>
+        <Text className="text-sm text-gray-400">{item.category.name}</Text>
       </View>
       <View className=" flex items-center justify-between flex-row">
         <Text>{item.weight}</Text>

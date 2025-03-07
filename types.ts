@@ -23,3 +23,30 @@ export interface Order {
   status: string;
   createdAt: string;
 }
+export interface Category {
+  id: string;
+  name: string;
+}
+export interface CategoryTypes {
+  categories: Category[];
+}
+
+export interface Products {
+  category: Category;
+  categoryId: string;
+  createdAt: string;
+  description: string;
+  discount: string;
+  id: string;
+  image: string;
+  name: string;
+  originalPrice: number;
+  rating: number;
+  ratings: number;
+  salePrice: number;
+  state: string;
+  updatedAt: string;
+  weight: string;
+}
+
+export type ProductResponse = Products[];

@@ -32,7 +32,7 @@ const payment = () => {
   const [IsBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
- 
+
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -154,7 +154,7 @@ const payment = () => {
           >
             <Pressable
               // onPress={CreateOrder}
-              onPress={() => router.replace("/(auth)/(cart)/Summary")}
+              onPress={() => router.replace("/summary")}
               className="flex items-center justify-center gap-3 bg-green-700 flex-row py-3 w-full rounded-lg"
             >
               {loading ? (
