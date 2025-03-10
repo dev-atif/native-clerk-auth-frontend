@@ -9,6 +9,7 @@ import { useUser } from "@clerk/clerk-expo";
 import ProductCard from "@/components/products-card/ProductCard";
 import eventBus from "@/Helper/event"; // Import event emitter
 import { useFavouriteProduct } from "@/store/FavProductStore";
+import CartIcon from "@/components/cartIcon";
 
 const Favourite = () => {
   const router = useRouter();
@@ -32,19 +33,14 @@ const Favourite = () => {
             <Text className="tracking-wider font-medium text-xl text-center">
               Favourite Products
             </Text>
-            <Pressable
-              onPress={() => router.push("/cart")}
-              className="  p-2 rounded-full"
-            >
-              <Feather name="shopping-cart" size={24} color="green" />
-            </Pressable>
+            <CartIcon />
           </View>
           <View>
             <View className="px-2 pt-4">
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={CurrentUserFav}
-                keyExtractor={(index) => index.toString()}
+                keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
                 columnWrapperStyle={{
                   gap: 5,

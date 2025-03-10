@@ -103,8 +103,10 @@ const singleproduct = () => {
             <Text className="text-gray-400">Total Price</Text>
             <Text className="text-xl font-semibold">
               {Number(
-                product?.salePrice ? product?.salePrice : product?.originalPrice
-              ) * Number(productQuantity)}
+                (product?.salePrice
+                  ? product?.salePrice
+                  : product?.originalPrice) * Number(productQuantity)
+              ).toFixed(2)}
               $
             </Text>
           </View>

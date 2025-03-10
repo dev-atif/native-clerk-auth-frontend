@@ -12,6 +12,7 @@ interface ProductStoreState {
   addCart: (product: Product) => void;
   deleteProduct: (id: number) => void;
   decrementCart: (id: number) => void;
+  emptyCart: () => void;
 }
 //Storage for secure storage of data in the device using expo-secure-store library
 const secureStorage = {
@@ -67,6 +68,11 @@ export const useProductStore = create<ProductStoreState>()(
           Cart: state.Cart.map((item) =>
             item.id === id ? { ...item, quantity: item.quantity - 1 } : item
           ).filter((item) => item.quantity > 0),
+        }));
+      },
+      emptyCart: () => {
+        set(() => ({
+          Cart: [],
         }));
       },
     }),

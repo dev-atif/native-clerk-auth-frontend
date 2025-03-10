@@ -65,7 +65,7 @@ function AuthenticatedLayout() {
     if (isSignedIn && !inTabs && isverify) {
       router.replace("/(auth)/(home)");
     } else if (!isSignedIn) {
-      router.replace("/");
+      router.push("/");
     }
   }, [user]);
 

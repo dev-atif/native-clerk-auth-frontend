@@ -139,7 +139,7 @@ const ProductsScreen = () => {
           {/* Product List */}
           <View className="px-2 pt-4">
             <FlatList
-              style={{ height: height - 210 }}
+              style={{ height: height - 302 }}
               data={products}
               showsVerticalScrollIndicator={false}
               keyExtractor={(item, index) => index.toString()}

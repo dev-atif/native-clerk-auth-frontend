@@ -26,7 +26,7 @@ const Summary = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
-  const { Cart } = useProductStore();
+  const { Cart, emptyCart } = useProductStore();
   const { finalTotal } = useCartPrice();
   const { addresses, currentAddressIndex } = useAddressStore();
 
@@ -55,6 +55,7 @@ const Summary = () => {
           "Order Has been Placed Successfully!",
           ToastAndroid.LONG
         );
+        emptyCart();
       }
     } catch (error: any) {
       console.error(
