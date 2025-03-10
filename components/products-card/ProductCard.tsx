@@ -75,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         </Pressable>
       </View>
       <View>
-        <Text className=" text-base my-1">{item.name}</Text>
+        <Text className=" text-base my-1 leading-5 h-10">{item.name}</Text>
       </View>
       <View className="flex items-center justify-between flex-row pb-2">
         <Text className="text-sm">Category</Text>
