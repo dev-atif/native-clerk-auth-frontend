@@ -18,13 +18,19 @@ import { Products } from "@/types";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/products-card/ProductCard";
-
+import DropDown from "@/components/DropDown";
+const PriceFilter = [
+  { label: "Default", value: "" },
+  { label: "High", value: "high" },
+  { label: "Low", value: "low" },
+];
 const ProductsScreen = () => {
   const [products, setProducts] = useState<Products[]>([]);
   const { search, catId, catName } = useLocalSearchParams();
   const { height } = Dimensions.get("window");
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [pricefilt, setPriceFilt] = useState("");
   const limit = 5;
   const [skip, setSkip] = useState(0);
   const route = useRouter();
@@ -43,7 +49,7 @@ const ProductsScreen = () => {
       }
 
       const { data } = await axios.get(
-        `http://192.168.18.107:3333/api/products?skip=${newSkip}&limit=${limit}&catId=${catId}&SearchKeyword=${search}`
+        `http://192.168.18.107:3333/api/products?skip=${newSkip}&limit=${limit}&catId=${catId}&SearchKeyword=${search}&sortedByprice=${pricefilt}`
       );
 
       if (data.data.length > 0) {
@@ -60,17 +66,6 @@ const ProductsScreen = () => {
     }
   };
 
-  // Handle focus and reset data when necessary
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     fetchProduct(true, 0);
-  //     if (segment[1] !== "(product)") {
-  //       route.setParams({ catId: undefined, catName: undefined });
-  //       setSkip(0);
-  //       setProducts([]);
-  //     }
-  //   }, [segment, search, catId])
-  // );
   useFocusEffect(
     useCallback(() => {
       fetchProduct(true, 0);
@@ -80,8 +75,9 @@ const ProductsScreen = () => {
         setProducts([]);
         setSkip(0);
         setHasMore(true);
+        setPriceFilt("");
       };
-    }, [segment, search, catId])
+    }, [segment, search, catId, pricefilt])
   );
 
   // Load more products when reaching the end
@@ -97,11 +93,20 @@ const ProductsScreen = () => {
     <GestureHandlerRootView>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <View>
-          <View className="-mt-10">
+          <View className="">
             <Header />
           </View>
           <View className="px-4">
             <SearchBar />
+          </View>
+          <View className="mx-4 my-2 px-2 rounded-xl border border-gray-300">
+            <DropDown
+              data={PriceFilter}
+              selectedValue={pricefilt}
+              setSelectedValue={setPriceFilt}
+              placeholder={{ label: "Price order", value: "" }}
+              value={pricefilt}
+            />
           </View>
           <View className="px-4">
             <Text className="text-2xl tracking-wider">Products</Text>
@@ -136,22 +141,21 @@ const ProductsScreen = () => {
             <FlatList
               style={{ height: height - 210 }}
               data={products}
+              showsVerticalScrollIndicator={false}
               keyExtractor={(item, index) => index.toString()}
               numColumns={2}
               onEndReached={onLoadFetch}
               onEndReachedThreshold={1} // Ensures early fetching
               columnWrapperStyle={{
-                justifyContent: "space-between",
-                gap: 160,
+                gap: 10,
               }}
               renderItem={({ item }) => (
-                <View style={{ flex: 1, margin: 5, alignItems: "center" }}>
+                <View style={{ flex: 1, margin: 5 }}>
                   <ProductCard item={item} />
                 </View>
               )}
               contentContainerStyle={{
-                paddingBottom: 50,
-                alignItems: "center",
+                paddingBottom: 100,
               }}
               ListFooterComponent={
                 loading && hasMore ? (

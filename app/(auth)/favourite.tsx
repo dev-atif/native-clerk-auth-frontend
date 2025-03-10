@@ -44,14 +44,13 @@ const Favourite = () => {
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={CurrentUserFav}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(index) => index.toString()}
                 numColumns={2}
                 columnWrapperStyle={{
-                  justifyContent: "space-between",
-                  gap: 160,
+                  gap: 5,
                 }}
                 renderItem={({ item }) => (
-                  <View style={{ flex: 1, margin: 5, alignItems: "center" }}>
+                  <View style={{ flex: 1, margin: 5 }}>
                     <ProductCard item={item} />
                   </View>
                 )}
@@ -76,7 +75,7 @@ const Favourite = () => {
                 }
                 contentContainerStyle={{
                   paddingBottom: 50,
-                  alignItems: "center", // ✅ Ensures the list items are centered
+                  // ✅ Ensures the list items are centered
                 }}
               />
             </View>

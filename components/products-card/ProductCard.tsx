@@ -52,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
   return (
     <Pressable
-      style={{ elevation: 5, width: screenWidth / 2 - 32 }}
+      style={{ elevation: 5, width: screenWidth / 2 - 20 }}
       className="bg-white p-2 rounded-lg mb-5"
     >
       <View className="flex bg-gray-100 items-center justify-center rounded-lg h-36  relative">
