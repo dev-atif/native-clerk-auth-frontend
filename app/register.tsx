@@ -16,6 +16,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useRouter } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";
+import { UserRole } from "@/types";
 
 const register = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -49,6 +50,7 @@ const register = () => {
           username: formData.name,
           emailAddress: formData.email,
           password: formData.password,
+          unsafeMetadata: { role: UserRole.General },
         });
 
         if (submit) {
@@ -71,9 +73,7 @@ const register = () => {
       }
     }
   };
-  // const handleSubmit = () => {
-  //   router.navigate(`/verifyottp?email=${formData.email}`);
-  // };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View>

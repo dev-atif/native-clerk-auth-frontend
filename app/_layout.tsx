@@ -1,5 +1,11 @@
 import { useFonts } from "expo-font";
-import { router, Stack, useRouter, useSegments } from "expo-router";
+import {
+  router,
+  Stack,
+  usePathname,
+  useRouter,
+  useSegments,
+} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -13,6 +19,7 @@ import {
   useUser,
 } from "@clerk/clerk-expo";
 import { tokenCache } from "./../cache";
+import { UserRole } from "@/types";
 
 // Prevent splash screen from auto-hiding before assets are loaded
 SplashScreen.preventAutoHideAsync();
@@ -55,9 +62,11 @@ function AuthenticatedLayout() {
   const { user } = useUser();
   const segments = useSegments();
   const router = useRouter();
+  const pathname = usePathname();
   const isverify = user?.emailAddresses[0].verification.status;
   //@ts-ignore
   const inTabs = segments[0] === "auth";
+  const role = user?.unsafeMetadata?.role;
   console.log("login", isSignedIn);
   useEffect(() => {
     if (!isLoaded) return;
@@ -68,11 +77,17 @@ function AuthenticatedLayout() {
       router.push("/");
     }
   }, [user]);
+  useEffect(() => {
+    if (segments[0] === "createproduct" && role !== UserRole.Admin) {
+      router.replace("/(auth)/(home)");
+    }
+  }, [user, role, segments]);
 
   return (
     <>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="createproduct" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />

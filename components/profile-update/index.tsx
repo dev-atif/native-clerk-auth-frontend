@@ -57,8 +57,7 @@ const ProfileUpdate = () => {
     name: "",
     number: "",
   });
-  const params = useSearchParams();
-  const verify = params.get("verify");
+
   const { width } = Dimensions.get("window");
   useEffect(() => {
     if (user && typeof user.unsafeMetadata?.number === "string") {
@@ -74,12 +73,21 @@ const ProfileUpdate = () => {
     }
   }, [user]);
   const router = useRouter();
+
+
+
+
   const handleInputChange = (key: string, value: string | boolean) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
+
+
+
+
+  
   const pickImage = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -121,6 +129,7 @@ const ProfileUpdate = () => {
       await user?.update({
         firstName: formdata.name,
         unsafeMetadata: {
+          ...user?.unsafeMetadata,
           number: selectedCode + formdata.number,
           gender: gender,
         },
@@ -134,9 +143,7 @@ const ProfileUpdate = () => {
       setLoading(false);
     }
   };
-  // const UpdateProfile = () => {
-  //   router.navigate("/Location");
-  // };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View className="px-4">

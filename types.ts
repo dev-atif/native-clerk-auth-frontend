@@ -47,6 +47,12 @@ export interface Products {
   state: string;
   updatedAt: string;
   weight: string;
+  size: string;
 }
 
 export type ProductResponse = Products[];
+
+export enum UserRole {
+  Admin = "admin",
+  General = "general",
+}

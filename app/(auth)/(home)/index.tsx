@@ -25,12 +25,13 @@ import { FetchProducts } from "@/Helper/GetallProducts";
 import { Products } from "@/types";
 import { useFavouriteProduct } from "@/store/FavProductStore";
 import SearchBar from "@/components/SearchBar";
+import DropdownMenu, { MenuOption } from "@/components/dropdown-menu";
 
 const Home = () => {
   const router = useRouter();
   const [products, setProducts] = useState<Products[]>([]);
   const { FavProduct } = useFavouriteProduct();
-
+  const { user } = useUser();
   useFocusEffect(
     useCallback(() => {
       const getProducts = async () => {
@@ -56,6 +57,7 @@ const Home = () => {
         <View className="-mt-10">
           <Header />
         </View>
+        <View></View>
         <View className="px-8 mt-1">
           <View className="flex items-center justify-between flex-row ">
             <View>

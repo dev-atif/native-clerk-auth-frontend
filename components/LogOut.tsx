@@ -17,7 +17,9 @@ const LogOut = () => {
   };
   return (
     <Pressable onPress={handleLogout}>
-      <AntDesign name="logout" size={24} color="green" />
+      <Text>
+        <AntDesign name="logout" size={24} color="green" />
+      </Text>
     </Pressable>
   );
 };

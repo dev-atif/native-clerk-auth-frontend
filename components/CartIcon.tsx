@@ -3,10 +3,13 @@ import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useProductStore } from "@/store/ProductStore";
+import { useUser } from "@clerk/clerk-expo";
 
 const CartIcon = () => {
   const router = useRouter();
   const { Cart } = useProductStore();
+  const { isLoaded } = useUser();
+  if (!isLoaded) return;
   return (
     <Pressable
       onPress={() => router.push("/cart")}

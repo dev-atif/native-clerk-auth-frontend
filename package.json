@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.8.0",
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/types": "^4.47.0",
     "@expo/vector-icons": "^14.0.4",
     "@gorhom/bottom-sheet": "^5.1.1",
@@ -44,6 +45,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.7",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-mmkv": "^3.2.0",

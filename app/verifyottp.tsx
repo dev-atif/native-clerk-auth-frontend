@@ -8,13 +8,13 @@ import {
   ToastAndroid,
   View,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
-import { useSignUp } from "@clerk/clerk-expo";
-
+import { useSignUp, useUser } from "@clerk/clerk-expo";
+import { UserRole } from "@/types";
 const VerifyOtp = () => {
   const [otp, setOtp] = useState(""); // Store OTP as a string
   const inputRefs = useRef<Array<TextInput | null>>([]); // Refs for input fields
@@ -23,6 +23,7 @@ const VerifyOtp = () => {
   const email = params.get("email") || "No email is provided";
   const { isLoaded, signUp, setActive } = useSignUp();
   const [loading, setLoading] = useState(false);
+  const { user } = useUser();
   const { width } = Dimensions.get("window");
   const handleChange = (text: string, index: number) => {
     if (/^\d?$/.test(text)) {
@@ -56,8 +57,11 @@ const VerifyOtp = () => {
         code: String(otp),
       });
       if (verify.status === "complete") {
-        await setActive({ session: verify.createdSessionId });
-        router.navigate(`/Profile?verify=${verify}`);
+        const setSession = await setActive({
+          session: verify.createdSessionId,
+        });
+
+        router.navigate(`/Profile?verify`);
         ToastAndroid.show(
           "Email verification Complete",
 
@@ -71,9 +75,32 @@ const VerifyOtp = () => {
       setLoading(false);
     }
   };
-  // const ClickVerify = () => {
-  //   router.navigate("/Profile");
-  // };
+  useEffect(() => {
+    async function updateUserMetadata() {
+      if (!user) {
+        console.log("User Not Found");
+        return;
+      }
+
+      if (user.unsafeMetadata?.role) {
+        console.log("User role already set, skipping update.");
+        return;
+      }
+
+      try {
+        await user.update({
+          unsafeMetadata: { role: UserRole.General },
+        });
+
+        console.log("Success: User role updated!");
+      } catch (error) {
+        console.error("Update error:", error);
+      }
+    }
+
+    updateUserMetadata();
+  }, [user]);
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white" }}

@@ -82,7 +82,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         <Text className="text-sm text-gray-400">{item.category.name}</Text>
       </View>
       <View className=" flex items-center justify-between flex-row">
-        <Text>{item.weight}</Text>
+        {item.size ? (
+          <>
+            <Text>{item.size}</Text>
+          </>
+        ) : (
+          <>
+            <Text>{item.weight}</Text>
+          </>
+        )}
+
         <Pressable
           onPress={() =>
             route.push({

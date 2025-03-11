@@ -9,7 +9,7 @@ import { useUser } from "@clerk/clerk-expo";
 import ProductCard from "@/components/products-card/ProductCard";
 import eventBus from "@/Helper/event"; // Import event emitter
 import { useFavouriteProduct } from "@/store/FavProductStore";
-import CartIcon from "@/components/cartIcon";
+import CartIcon from "@/components/CartIcon";
 
 const Favourite = () => {
   const router = useRouter();
@@ -33,7 +33,9 @@ const Favourite = () => {
             <Text className="tracking-wider font-medium text-xl text-center">
               Favourite Products
             </Text>
-            <CartIcon />
+            <View>
+              <CartIcon />
+            </View>
           </View>
           <View>
             <View className="px-2 pt-4">

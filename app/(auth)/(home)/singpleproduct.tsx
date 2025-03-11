@@ -7,8 +7,6 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { BlurView } from "expo-blur";
-
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useLocalSearchParams } from "expo-router";
@@ -38,7 +36,7 @@ const singleproduct = () => {
       setProductQuantity(productQuantity - 1);
     }
   };
-  console.log(product);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ flex: 1 }}>
