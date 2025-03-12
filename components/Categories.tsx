@@ -50,7 +50,7 @@ const Categories = () => {
       </View>
       <View className="my-4">
         <View className="flex flex-wrap justify-between flex-row">
-          {categories.map((category) => {
+          {categories.slice(0, 4).map((category) => {
             return (
               <Pressable
                 key={category.id}

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   Pressable,
   StyleSheet,
@@ -24,13 +25,11 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const { width: screenWidth } = Dimensions.get("window");
-  const [favdata, setFavdata] = useState([]);
+  const [loading, setLoading] = useState(false);
   const route = useRouter();
   const { user } = useUser();
   const { FavProduct, setFav } = useFavouriteProduct();
   const userId = user?.id || "";
-  //@ts-ignore
-  // const id = item.productId ? item.productId : item.id;
 
   const AddtoWishlist = async (item: Products) => {
     try {
@@ -56,10 +55,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
       className="bg-white p-2 rounded-lg mb-5"
     >
       <View className="flex bg-gray-100 items-center justify-center rounded-lg h-36  relative">
-        <Image
-          source={{ uri: item.image }}
-          className="w-28 h-28 mix-blend-darken"
-        />
+        {item.image ? (
+          <Image
+            source={{ uri: item.image }}
+            className="w-28 h-28 mix-blend-darken"
+            onLoadStart={() => !loading && setLoading(true)}
+            onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
+          />
+        ) : (
+          <ActivityIndicator color={"green"} size={40} />
+        )}
+
         <Text className="text-white bg-green-700 px-4 py-1 text-sm absolute top-0 left-0 rounded-tl-lg rounded-br-lg">
           {item.discount}
         </Text>
@@ -82,13 +89,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         <Text className="text-sm text-gray-400">{item.category.name}</Text>
       </View>
       <View className=" flex items-center justify-between flex-row">
-        {item.size ? (
+        {item.weight ? (
           <>
-            <Text>{item.size}</Text>
+            <Text>{item.weight}</Text>
           </>
         ) : (
           <>
-            <Text>{item.weight}</Text>
+            {Array.isArray(item.size) ? (
+              item.size.map((size, index) => (
+                <Text key={index}>
+                  {size}
+                  {index < item.size.length - 1 && ","}
+                </Text>
+              ))
+            ) : (
+              <Text>{item.size}</Text>
+            )}
           </>
         )}
 

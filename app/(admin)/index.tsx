@@ -40,10 +40,19 @@ const createproduct = () => {
     categoryId: "",
     productType: "",
     weight: "",
-    size: "",
+    size: [],
   };
   const [imageurl, setImageUrl] = useState<string | null>(null);
-  const [formdata, setFormdata] = useState({
+  const [formdata, setFormdata] = useState<{
+    name: string;
+    description: string;
+    price: string;
+    salePrice: string;
+    categoryId: string;
+    productType: string;
+    weight: string;
+    size: string[];
+  }>({
     name: "",
     description: "",
     price: "",
@@ -51,7 +60,7 @@ const createproduct = () => {
     categoryId: "",
     productType: "",
     weight: "",
-    size: "",
+    size: [],
   });
   const [categories, setCategories] = useState<
     { label: string; value: string }[]
@@ -75,10 +84,12 @@ const createproduct = () => {
     const Data = {
       name: formdata.name,
       image: imageurl,
-      discount: calculateDiscount(formdata.price, formdata.salePrice),
+      discount: formdata.salePrice
+        ? calculateDiscount(formdata.price, formdata.salePrice)
+        : null,
       weight: formatWeight(formdata.weight, formdata.productType),
       originalPrice: Number(formdata.price),
-      salePrice: Number(formdata.salePrice),
+      salePrice: formdata.salePrice ? Number(formdata.salePrice) : null,
       description: formdata.description,
       state: formdata.productType,
       categoryId: formdata.categoryId,
@@ -252,15 +263,20 @@ const createproduct = () => {
                           <TouchableOpacity
                             key={size}
                             className={` w-10 h-10 flex items-center rounded-lg  justify-center transform transition-all duration-300 ${
-                              formdata.size === size
+                              formdata.size.includes(size)
                                 ? "bg-green-700"
                                 : "bg-transparent border border-black"
                             }`}
-                            onPress={() => handleInputChange("size", size)}
+                            onPress={() => {
+                              const newSize = formdata.size.includes(size)
+                                ? formdata.size.filter((s) => s !== size)
+                                : [...formdata.size, size];
+                              handleInputChange("size", newSize);
+                            }}
                           >
                             <Text
                               className={`text-sm transform transition-all duration-300 ${
-                                formdata.size === size
+                                formdata.size.includes(size)
                                   ? "text-white"
                                   : "text-green-700 "
                               }`}

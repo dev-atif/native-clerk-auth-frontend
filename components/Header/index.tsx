@@ -11,7 +11,7 @@ import CartIcon from "../CartIcon";
 import DropdownMenu, { MenuOption } from "../dropdown-menu";
 import { UserRole } from "@/types";
 import { useAuth } from "@clerk/clerk-react";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 const Header = () => {
   const { isLoaded, user } = useUser();
@@ -79,12 +79,23 @@ const Header = () => {
                   <MenuOption
                     onSelect={() => {
                       setVisible(false);
-                      router.navigate("/createproduct");
+                      router.navigate("/(admin)");
                     }}
                   >
                     <View className="   rounded-full flex items-center flex-row gap-2">
                       <FontAwesome name="cubes" size={24} color="green" />
                       <Text>Create product</Text>
+                    </View>
+                  </MenuOption>
+                  <MenuOption
+                    onSelect={() => {
+                      setVisible(false);
+                      router.navigate("/(admin)/createcategory");
+                    }}
+                  >
+                    <View className="   rounded-full flex items-center flex-row gap-2">
+                      <MaterialIcons name="category" size={24} color="green" />
+                      <Text>Create Category</Text>
                     </View>
                   </MenuOption>
                 </>

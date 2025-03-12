@@ -78,7 +78,7 @@ function AuthenticatedLayout() {
     }
   }, [user]);
   useEffect(() => {
-    if (segments[0] === "createproduct" && role !== UserRole.Admin) {
+    if (segments[0] === "(admin)" && role !== UserRole.Admin) {
       router.replace("/(auth)/(home)");
     }
   }, [user, role, segments]);
@@ -87,7 +87,7 @@ function AuthenticatedLayout() {
     <>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="createproduct" options={{ headerShown: false }} />
+        <Stack.Screen name="(admin)" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
